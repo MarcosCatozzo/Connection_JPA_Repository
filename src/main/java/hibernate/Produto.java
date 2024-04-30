@@ -3,16 +3,30 @@ package hibernate;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+
 @Entity
 @Table (name = "produtos")
 public class Produto {
 	@Id
 	@GeneratedValue (strategy = GenerationType.IDENTITY )
+
 	private long id;
 	private String nome;
 	@Column(name = "descricao")
 	private String desscricao;
 	private BigDecimal preco;
+	@Enumerated(EnumType.STRING)
+	private Categoria categoria;
+
+	public Produto(String nome, String desscricao, BigDecimal preco, Categoria categoria) {
+		this.nome = nome;
+		this.desscricao = desscricao;
+		this.preco = preco;
+		this.categoria = categoria;
+	}
+
+	private LocalDate dataCadastro = LocalDate.now();
 
 	public long getId() {
 		return id;

@@ -6,18 +6,23 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
-@Table (name = "produtos")
+@Table(name = "produtos")
 public class Produto {
 	@Id
-	@GeneratedValue (strategy = GenerationType.IDENTITY )
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 
 	private long id;
 	private String nome;
 	@Column(name = "descricao")
 	private String desscricao;
 	private BigDecimal preco;
-	@Enumerated(EnumType.STRING)
+	@ManyToOne
 	private Categoria categoria;
+	private LocalDate dataCadastro = LocalDate.now();
+
+	public Produto(){
+
+	}
 
 	public Produto(String nome, String desscricao, BigDecimal preco, Categoria categoria) {
 		this.nome = nome;
@@ -26,7 +31,6 @@ public class Produto {
 		this.categoria = categoria;
 	}
 
-	private LocalDate dataCadastro = LocalDate.now();
 
 	public long getId() {
 		return id;
@@ -58,5 +62,21 @@ public class Produto {
 
 	public void setPreco(BigDecimal preco) {
 		this.preco = preco;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(Categoria categoria) {
+		this.categoria = categoria;
+	}
+
+	public LocalDate getDataCadastro() {
+		return dataCadastro;
+	}
+
+	public void setDataCadastro(LocalDate dataCadastro) {
+		this.dataCadastro = dataCadastro;
 	}
 }

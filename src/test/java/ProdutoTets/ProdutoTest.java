@@ -1,5 +1,6 @@
 package ProdutoTets;
 
+import Dao.CategoriaDao;
 import Dao.ProdutoDao;
 import Util.JPAUtil;
 import hibernate.Categoria;
@@ -11,14 +12,35 @@ import java.math.BigDecimal;
 public class ProdutoTest {
 
 	public static void main(String[] args) {
-		Produto pr = new Produto("phone","Apple",new BigDecimal("800"), Categoria.CELULARES);
+
+		Categoria celulares = new Categoria("CELULARES");
+		Produto pr = new Produto("phone","Apple",new BigDecimal("800"), celulares);
 
 		EntityManager em = JPAUtil.getEntityManager();
-		ProdutoDao dao = new ProdutoDao(em);
+		ProdutoDao produtoDao = new ProdutoDao(em);
+		CategoriaDao categoriaDao = new CategoriaDao(em);
+
 
 		em.getTransaction().begin();
-		dao.cadastro(pr);
-		em.getTransaction().commit();
-		em.close();
+
+		em.persist(celulares);
+		celulares.setNomeCategoria("CAPINHA");
+
+		em.persist(pr);
+
+		categoriaDao.cadastro(celulares);
+		produtoDao.cadastro(pr);
+
+		em.flush();
+		em.clear();
+
+		celulares = em.merge(celulares);
+		celulares.setNomeCategoria("CARREGADOR");
+		em.flush();
+		em.remove(celulares);
+		em.flush();
+		em.clear();
+
+
 	}
 }

@@ -13,6 +13,14 @@ public class ProdutoTest {
 
 	public static void main(String[] args) {
 
+		cadastrarProduto();
+		Long id = 1L;
+		EntityManager em = JPAUtil.getEntityManager();
+		ProdutoDao produtoDao = new ProdutoDao(em);
+
+	}
+
+	private static void cadastrarProduto() {
 		Categoria celulares = new Categoria("CELULARES");
 		Produto pr = new Produto("phone","Apple",new BigDecimal("800"), celulares);
 
@@ -39,8 +47,5 @@ public class ProdutoTest {
 		em.flush();
 		em.remove(celulares);
 		em.flush();
-		em.clear();
-
-
 	}
 }
